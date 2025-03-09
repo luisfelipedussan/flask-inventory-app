@@ -1,32 +1,27 @@
 {% extends "base.html" %}
+{% from 'macros.html' import render_field %}
 
 {% block content %}
-<h1>Agregar Nuevo Item</h1>
-<form method="POST">
-    <div class="mb-3">
-        <label for="name" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="name" name="name" required>
+<div class="card">
+    <div class="card-header">
+        <h1>Agregar Nuevo Item</h1>
     </div>
-    <div class="mb-3">
-        <label for="price" class="form-label">Precio</label>
-        <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+    <div class="card-body">
+        <form method="POST" class="needs-validation" novalidate>
+            {{ render_field('name', 'Nombre', required=True) }}
+            {{ render_field('price', 'Precio', type='number', required=True) }}
+            {{ render_field('mac_address', 'Dirección MAC', required=True,
+                          pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$",
+                          help_text="Formato: XX:XX:XX:XX:XX:XX") }}
+            {{ render_field('serial_number', 'Número de Serie', required=True) }}
+            {{ render_field('manufacturer', 'Fabricante', required=True) }}
+            {{ render_field('description', 'Descripción', type='textarea') }}
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label for="mac_address" class="form-label">Dirección MAC</label>
-        <input type="text" class="form-control" id="mac_address" name="mac_address" required>
-    </div>
-    <div class="mb-3">
-        <label for="serial_number" class="form-label">Número de Serie</label>
-        <input type="text" class="form-control" id="serial_number" name="serial_number" required>
-    </div>
-    <div class="mb-3">
-        <label for="manufacturer" class="form-label">Fabricante</label>
-        <input type="text" class="form-control" id="manufacturer" name="manufacturer" required>
-    </div>
-    <div class="mb-3">
-        <label for="description" class="form-label">Descripción</label>
-        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+</div>
 {% endblock %} 
