@@ -2,7 +2,7 @@
 
 A simple inventory management system built with Flask, MySQL, and Docker.
 
-## Video Demo  
+## 🎥 Video Demo 
 [https://youtu.be/oc_fBi8XJHc](https://youtu.be/oc_fBi8XJHc)
 
 
