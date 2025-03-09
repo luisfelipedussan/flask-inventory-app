@@ -2,6 +2,10 @@
 
 A simple inventory management system built with Flask, MySQL, and Docker.
 
+## Video Demo  
+[https://youtu.be/oc_fBi8XJHc](https://youtu.be/oc_fBi8XJHc)
+
+
 ## Features
 
 - CRUD operations for inventory items
