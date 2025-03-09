@@ -8,13 +8,22 @@
     </div>
     <div class="card-body">
         <form method="POST" class="needs-validation" novalidate>
-            {{ render_field('name', 'Nombre', required=True) }}
-            {{ render_field('price', 'Precio', type='number', required=True) }}
+            {{ render_field('name', 'Nombre', required=True, 
+                          help_text='Máximo 100 caracteres') }}
+            
+            {{ render_field('price', 'Precio', type='number', required=True,
+                          min="0.01", step="0.01",
+                          help_text='Ingrese un valor numérico positivo') }}
+            
             {{ render_field('mac_address', 'Dirección MAC', required=True,
                           pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$",
                           help_text="Formato: XX:XX:XX:XX:XX:XX") }}
-            {{ render_field('serial_number', 'Número de Serie', required=True) }}
+            
+            {{ render_field('serial_number', 'Número de Serie', required=True,
+                          help_text='Máximo 50 caracteres') }}
+            
             {{ render_field('manufacturer', 'Fabricante', required=True) }}
+            
             {{ render_field('description', 'Descripción', type='textarea') }}
             
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -24,4 +33,50 @@
         </form>
     </div>
 </div>
+
+<script>
+// Ejemplo de JavaScript para la validación del formulario Bootstrap
+(function () {
+    'use strict'
+
+    // Obtener todos los formularios a los que queremos aplicar estilos de validación de Bootstrap personalizados
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Bucle sobre ellos y evitar el envío
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+
+// Validación personalizada para el precio
+document.getElementById('price').addEventListener('input', function(e) {
+    const value = parseFloat(e.target.value);
+    if (isNaN(value)) {
+        e.target.setCustomValidity('Por favor ingrese un número válido');
+    } else if (value <= 0) {
+        e.target.setCustomValidity('El precio debe ser mayor que 0');
+    } else {
+        e.target.setCustomValidity('');
+    }
+});
+
+// Validación personalizada para la dirección MAC
+document.getElementById('mac_address').addEventListener('input', function(e) {
+    const value = e.target.value;
+    const pattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+    if (!pattern.test(value)) {
+        e.target.setCustomValidity('Formato inválido. Use XX:XX:XX:XX:XX:XX');
+    } else {
+        e.target.setCustomValidity('');
+    }
+});
+</script>
 {% endblock %} 

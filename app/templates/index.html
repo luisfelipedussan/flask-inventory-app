@@ -19,6 +19,7 @@
                         <th>Dirección MAC</th>
                         <th>Número de Serie</th>
                         <th>Fabricante</th>
+                        <th>Descripción</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -31,6 +32,7 @@
                         <td>{{ item.mac_address }}</td>
                         <td>{{ item.serial_number }}</td>
                         <td>{{ item.manufacturer }}</td>
+                        <td>{{ item.description }}</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <a href="{{ url_for('edit', id=item.id) }}" class="btn btn-sm btn-primary">

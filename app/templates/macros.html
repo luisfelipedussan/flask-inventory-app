@@ -1,4 +1,4 @@
-{% macro render_field(field, label='', type='text', required=False, pattern='', value='', help_text='') %}
+{% macro render_field(field, label='', type='text', required=False, pattern='', value='', help_text='', min='', max='', step='') %}
     <div class="mb-3">
         <label for="{{ field }}" class="form-label">{{ label }}</label>
         {% if type == 'textarea' %}
@@ -10,14 +10,23 @@
                 <input type="{{ type }}" class="form-control" id="{{ field }}" 
                        name="{{ field }}" value="{{ value|default('', true) }}"
                        {% if required %}required{% endif %}
-                       {% if pattern %}pattern="{{ pattern }}"{% endif %}>
+                       {% if pattern %}pattern="{{ pattern }}"{% endif %}
+                       {% if min %}min="{{ min }}"{% endif %}
+                       {% if max %}max="{{ max }}"{% endif %}
+                       {% if step %}step="{{ step }}"{% endif %}
+                       oninvalid="this.setCustomValidity('')"
+                       oninput="this.setCustomValidity('')">
             </div>
         {% endif %}
         {% if help_text %}
             <div class="form-text">{{ help_text }}</div>
         {% endif %}
         <div class="invalid-feedback">
-            Por favor complete este campo correctamente
+            {% if type == 'number' %}
+                Por favor ingrese un número válido
+            {% else %}
+                Por favor complete este campo correctamente
+            {% endif %}
         </div>
     </div>
 {% endmacro %}
