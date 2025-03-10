@@ -4,45 +4,45 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h1>Agregar Nuevo Item</h1>
+        <h1>Add New Item</h1>
     </div>
     <div class="card-body">
         <form method="POST" class="needs-validation" novalidate>
-            {{ render_field('name', 'Nombre', required=True, 
-                          help_text='Máximo 100 caracteres') }}
+            {{ render_field('name', 'Name', required=True, 
+                          help_text='Maximum 100 characters') }}
             
-            {{ render_field('price', 'Precio', type='number', required=True,
+            {{ render_field('price', 'Price', type='number', required=True,
                           min="0.01", step="0.01",
-                          help_text='Ingrese un valor numérico positivo') }}
+                          help_text='Enter a positive number') }}
             
-            {{ render_field('mac_address', 'Dirección MAC', required=True,
+            {{ render_field('mac_address', 'MAC Address', required=True,
                           pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$",
-                          help_text="Formato: XX:XX:XX:XX:XX:XX") }}
+                          help_text="Format: XX:XX:XX:XX:XX:XX") }}
             
-            {{ render_field('serial_number', 'Número de Serie', required=True,
-                          help_text='Máximo 50 caracteres') }}
+            {{ render_field('serial_number', 'Serial Number', required=True,
+                          help_text='Maximum 50 characters') }}
             
-            {{ render_field('manufacturer', 'Fabricante', required=True) }}
+            {{ render_field('manufacturer', 'Manufacturer', required=True) }}
             
-            {{ render_field('description', 'Descripción', type='textarea') }}
+            {{ render_field('description', 'Description', type='textarea') }}
             
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-// Ejemplo de JavaScript para la validación del formulario Bootstrap
+// Example of JavaScript for Bootstrap form validation
 (function () {
     'use strict'
 
-    // Obtener todos los formularios a los que queremos aplicar estilos de validación de Bootstrap personalizados
+    // Fetch all forms we want to apply custom Bootstrap validation styles to
     var forms = document.querySelectorAll('.needs-validation')
 
-    // Bucle sobre ellos y evitar el envío
+    // Loop over them and prevent submission
     Array.prototype.slice.call(forms)
         .forEach(function (form) {
             form.addEventListener('submit', function (event) {
@@ -56,24 +56,24 @@
         })
 })()
 
-// Validación personalizada para el precio
+// Custom validation for price
 document.getElementById('price').addEventListener('input', function(e) {
     const value = parseFloat(e.target.value);
     if (isNaN(value)) {
-        e.target.setCustomValidity('Por favor ingrese un número válido');
+        e.target.setCustomValidity('Please enter a valid number');
     } else if (value <= 0) {
-        e.target.setCustomValidity('El precio debe ser mayor que 0');
+        e.target.setCustomValidity('Price must be greater than 0');
     } else {
         e.target.setCustomValidity('');
     }
 });
 
-// Validación personalizada para la dirección MAC
+// Custom validation for MAC address
 document.getElementById('mac_address').addEventListener('input', function(e) {
     const value = e.target.value;
     const pattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
     if (!pattern.test(value)) {
-        e.target.setCustomValidity('Formato inválido. Use XX:XX:XX:XX:XX:XX');
+        e.target.setCustomValidity('Invalid format. Use XX:XX:XX:XX:XX:XX');
     } else {
         e.target.setCustomValidity('');
     }

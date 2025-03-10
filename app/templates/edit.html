@@ -4,23 +4,23 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h1>Editar Item</h1>
+        <h1>Edit Item</h1>
     </div>
     <div class="card-body">
         <form method="POST" class="needs-validation" novalidate>
-            {{ render_field('name', 'Nombre', required=True, value=item.name) }}
-            {{ render_field('price', 'Precio', type='number', required=True, value=item.price) }}
-            {{ render_field('mac_address', 'Dirección MAC', required=True,
+            {{ render_field('name', 'Name', required=True, value=item.name) }}
+            {{ render_field('price', 'Price', type='number', required=True, value=item.price) }}
+            {{ render_field('mac_address', 'MAC Address', required=True,
                           pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$",
-                          help_text="Formato: XX:XX:XX:XX:XX:XX",
+                          help_text="Format: XX:XX:XX:XX:XX:XX",
                           value=item.mac_address) }}
-            {{ render_field('serial_number', 'Número de Serie', required=True, value=item.serial_number) }}
-            {{ render_field('manufacturer', 'Fabricante', required=True, value=item.manufacturer) }}
-            {{ render_field('description', 'Descripción', type='textarea', value=item.description) }}
+            {{ render_field('serial_number', 'Serial Number', required=True, value=item.serial_number) }}
+            {{ render_field('manufacturer', 'Manufacturer', required=True, value=item.manufacturer) }}
+            {{ render_field('description', 'Description', type='textarea', value=item.description) }}
             
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
-                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </form>
     </div>

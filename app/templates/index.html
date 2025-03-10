@@ -3,9 +3,9 @@
 {% block content %}
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h1 class="mb-0">Inventario</h1>
+        <h1 class="mb-0">Inventory</h1>
         <a href="{{ url_for('add') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Agregar Item
+            <i class="fas fa-plus"></i> Add Item
         </a>
     </div>
     <div class="card-body">
@@ -14,13 +14,13 @@
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Dirección MAC</th>
-                        <th>Número de Serie</th>
-                        <th>Fabricante</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>MAC Address</th>
+                        <th>Serial Number</th>
+                        <th>Manufacturer</th>
+                        <th>Description</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,18 +36,18 @@
                         <td>
                             <div class="btn-group" role="group">
                                 <a href="{{ url_for('edit', id=item.id) }}" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-edit"></i> Editar
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
                                 <a href="{{ url_for('delete', id=item.id) }}" class="btn btn-sm btn-danger" 
-                                   onclick="return confirm('¿Estás seguro de eliminar este item?')">
-                                    <i class="fas fa-trash"></i> Eliminar
+                                   onclick="return confirm('Are you sure you want to delete this item?')">
+                                    <i class="fas fa-trash"></i> Delete
                                 </a>
                             </div>
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="7" class="text-center">No hay items en el inventario</td>
+                        <td colspan="8" class="text-center">No items in inventory</td>
                     </tr>
                     {% endfor %}
                 </tbody>

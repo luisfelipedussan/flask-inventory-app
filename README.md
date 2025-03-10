@@ -1,6 +1,27 @@
 # Flask Inventory Management System
 
-A simple inventory management system built with Flask, MySQL, and Docker.
+A comprehensive inventory management system built with Flask, MySQL, and Docker.
+
+## Project Structure
+
+```
+flask-inventory-app/
+├── app/                      # Application package
+│   ├── __init__.py          # Flask app initialization
+│   ├── config.py            # Configuration settings
+│   ├── models/              # Database models
+│   │   └── inventory.py     # Inventory model definition
+│   ├── routes/              # Route handlers
+│   │   └── inventory.py     # Inventory routes
+│   └── templates/           # Jinja2 templates
+│       ├── base.html        # Base template
+│       ├── index.html       # Inventory list view
+│       ├── add.html         # Add item form
+│       └── edit.html        # Edit item form
+├── Dockerfile               # Docker image definition
+├── docker-compose.yml       # Docker services config
+└── run.py                   # Application entry point
+```
 
 ## 🎥 Video Demo 
 [https://youtu.be/oc_fBi8XJHc](https://youtu.be/oc_fBi8XJHc)
@@ -8,12 +29,29 @@ A simple inventory management system built with Flask, MySQL, and Docker.
 
 ## Features
 
-- CRUD operations for inventory items
-- Responsive UI with Bootstrap 5
-- Form validation
-- MySQL database
-- Docker containerization
-- RESTful endpoints
+- **CRUD Operations**
+  - Create: Add new inventory items
+  - Read: View all items in a responsive table
+  - Update: Edit existing items
+  - Delete: Remove items from inventory
+
+- **Data Validation**
+  - Client-side validation using HTML5 and JavaScript
+  - Server-side validation for all inputs
+  - MAC address format validation
+  - Unique constraints on MAC and serial numbers
+
+- **User Interface**
+  - Responsive Bootstrap 5 design
+  - Form validation feedback
+  - Flash messages for operations
+  - Confirmation dialogs for deletion
+
+- **Error Handling**
+  - Comprehensive error messages
+  - Database transaction management
+  - Logging of all operations
+  - User-friendly error displays
 
 ## Prerequisites
 
@@ -26,7 +64,7 @@ A simple inventory management system built with Flask, MySQL, and Docker.
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/flask-inventory-app.git
+git clone https://github.com/luisfelipedussan/flask-inventory-app.git
 cd flask-inventory-app
 ```
 
@@ -38,14 +76,22 @@ docker-compose up --build
 
 3. **Access the application**
 
-Open your browser and navigate to `http://localhost:5000`
+Open your browser and navigate to `http://localhost:5001`
 
-## API Endpoints (Manual Testing)
+# API Endpoints 
+
+- Main page displaying a list of all elements in the database.
+- /add: Page for adding a new element to the database.
+- /edit/<id>: Page for editing an existing element in the database, where <id> is the
+element's unique identifier.
+- /delete/<id>: Route for deleting an element from the database.
+
+## Manual Testing
 
 ### Get all inventory items
 
 ```bash
-curl http://localhost:5000/api/inventory
+curl http://localhost:5001/api/inventory
 ```
 
 ### Get a single inventory item

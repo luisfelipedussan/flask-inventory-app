@@ -1,4 +1,19 @@
 {% macro render_field(field, label='', type='text', required=False, pattern='', value='', help_text='', min='', max='', step='') %}
+    {#
+    Renders a form field with Bootstrap styling and validation
+    
+    Args:
+        field: Field name
+        label: Field label
+        type: Input type (text, number, textarea)
+        required: If field is required
+        pattern: Regex pattern for validation
+        value: Default value
+        help_text: Helper text below field
+        min: Minimum value for number inputs
+        max: Maximum value for number inputs
+        step: Step value for number inputs
+    #}
     <div class="mb-3">
         <label for="{{ field }}" class="form-label">{{ label }}</label>
         {% if type == 'textarea' %}
@@ -23,9 +38,9 @@
         {% endif %}
         <div class="invalid-feedback">
             {% if type == 'number' %}
-                Por favor ingrese un número válido
+                Please enter a valid number
             {% else %}
-                Por favor complete este campo correctamente
+                Please complete this field correctly
             {% endif %}
         </div>
     </div>

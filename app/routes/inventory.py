@@ -7,82 +7,107 @@ import re
 logger = logging.getLogger(__name__)
 
 def validate_mac_address(mac_address):
-    """Validar formato de dirección MAC"""
+    """
+    Validate MAC address format
+    
+    Args:
+        mac_address (str): MAC address to validate
+        
+    Returns:
+        bool: True if MAC address is valid, False otherwise
+    """
     pattern = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
     return bool(re.match(pattern, mac_address))
 
 def validate_item(form_data):
-    """Validar todos los campos del formulario"""
+    """Validate form data for inventory item"""
     errors = []
     
-    # Validar nombre
+    # Validate name
     name = form_data.get('name', '').strip()
     if not name:
-        errors.append('El nombre es requerido')
+        errors.append('Name is required')
     elif len(name) > 100:
-        errors.append('El nombre no puede exceder 100 caracteres')
+        errors.append('Name cannot exceed 100 characters')
     
-    # Validar precio
+    # Validate price
     try:
         price = float(form_data.get('price', 0))
         if price <= 0:
-            errors.append('El precio debe ser mayor que 0')
+            errors.append('Price must be greater than 0')
     except (ValueError, TypeError):
-        errors.append('El precio debe ser un número válido (ejemplo: 99.99)')
+        errors.append('Price must be a valid number (example: 99.99)')
     
-    # Validar MAC address
+    # Validate MAC address
     mac_address = form_data.get('mac_address', '').strip()
     if not mac_address:
-        errors.append('La dirección MAC es requerida')
+        errors.append('MAC address is required')
     elif not validate_mac_address(mac_address):
-        errors.append('Formato de MAC inválido. Use el formato XX:XX:XX:XX:XX:XX')
+        errors.append('Invalid MAC format. Use format XX:XX:XX:XX:XX:XX')
     
-    # Validar número de serie
+    # Validate serial number
     serial = form_data.get('serial_number', '').strip()
     if not serial:
-        errors.append('El número de serie es requerido')
+        errors.append('Serial number is required')
     elif len(serial) > 50:
-        errors.append('El número de serie no puede exceder 50 caracteres')
+        errors.append('Serial number cannot exceed 50 characters')
     
-    # Validar fabricante
+    # Validate manufacturer
     manufacturer = form_data.get('manufacturer', '').strip()
     if not manufacturer:
-        errors.append('El fabricante es requerido')
+        errors.append('Manufacturer is required')
     
     return errors
 
 @app.route('/')
 def index():
+    """
+    Display inventory list
+    
+    Returns:
+        template: Rendered index.html with list of all inventory items
+    """
     try:
         items = Inventory.query.all()
         logger.info(f"Retrieved {len(items)} items from database")
         return render_template('index.html', items=items)
     except Exception as e:
         logger.error(f"Error retrieving items: {str(e)}")
-        flash('Error al cargar los items del inventario', 'danger')
+        flash('Error loading inventory items', 'danger')
         return render_template('index.html', items=[])
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
+    """
+    Add new inventory item
+    
+    GET: Display add item form
+    POST: Process form submission and add item to database
+    
+    Returns:
+        GET: template: Rendered add.html form
+        POST: redirect: To index page on success
+              template: Back to form with errors on failure
+    """
     if request.method == 'POST':
         try:
-            # Validar datos
+            # Validate data
             errors = validate_item(request.form)
             if errors:
                 for error in errors:
                     flash(error, 'danger')
                 return render_template('add.html', item=request.form), 400
 
-            # Verificar si MAC o serial ya existen
+            # Check if MAC or serial already exist
             if Inventory.query.filter_by(mac_address=request.form['mac_address']).first():
-                flash('Esta dirección MAC ya existe en el sistema', 'danger')
+                flash('This MAC address already exists in the system', 'danger')
                 return render_template('add.html', item=request.form), 400
             
             if Inventory.query.filter_by(serial_number=request.form['serial_number']).first():
-                flash('Este número de serie ya existe en el sistema', 'danger')
+                flash('This serial number already exists in the system', 'danger')
                 return render_template('add.html', item=request.form), 400
 
-            # Crear nuevo item
+            # Create new item
             item = Inventory(
                 name=request.form['name'],
                 price=float(request.form['price']),
@@ -93,13 +118,13 @@ def add():
             )
             db.session.add(item)
             db.session.commit()
-            flash('Item agregado exitosamente', 'success')
+            flash('Item added successfully', 'success')
             return redirect(url_for('index'))
             
         except Exception as e:
             logger.error(f"Error adding item: {str(e)}")
             db.session.rollback()
-            flash('Error al agregar el item', 'danger')
+            flash('Error adding item', 'danger')
             return render_template('add.html', item=request.form), 500
             
     return render_template('add.html')

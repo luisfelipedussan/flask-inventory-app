@@ -5,44 +5,45 @@ import time
 from sqlalchemy.exc import OperationalError
 import logging
 
-# Configurar logging
+# Configure logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# Inicializar Flask
+# Initialize Flask
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Inicializar SQLAlchemy
+# Initialize SQLAlchemy
 db = SQLAlchemy(app)
 
-# Crear todas las tablas con reintentos
+# Create all tables with retries
 def init_db(retries=5, delay=2):
+    """Initialize database with retry mechanism"""
     for i in range(retries):
         try:
             with app.app_context():
                 db.create_all()
-                logger.info("Base de datos inicializada correctamente")
-                # Verificar la conexión
+                logger.info("Database initialized successfully")
+                # Verify connection
                 db.session.execute('SELECT 1')
-                logger.info("Conexión a la base de datos verificada")
+                logger.info("Database connection verified")
                 return True
         except OperationalError as e:
             if i < retries - 1:
-                logger.warning(f"Intento {i+1}/{retries}: No se pudo conectar a la base de datos. Error: {str(e)}")
+                logger.warning(f"Attempt {i+1}/{retries}: Could not connect to database. Error: {str(e)}")
                 time.sleep(delay)
                 delay *= 2
             else:
-                logger.error(f"Error final: No se pudo conectar a la base de datos. Error: {str(e)}")
+                logger.error(f"Final error: Could not connect to database. Error: {str(e)}")
                 return False
 
-# Importar rutas después de crear la aplicación
+# Import routes after creating the application
 from app.routes import inventory
 from app.models import inventory
 
-# Inicializar la base de datos
+# Initialize database
 if not init_db():
-    logger.error("No se pudo inicializar la base de datos")
+    logger.error("Could not initialize database")
 
 @app.route('/health')
 def health_check():
@@ -50,7 +51,7 @@ def health_check():
         db.session.execute('SELECT 1')
         return jsonify({'status': 'healthy', 'database': 'connected'})
     except Exception as e:
-        logger.error(f"Error en health check: {str(e)}")
+        logger.error(f"Error in health check: {str(e)}")
         return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
 
 @app.route('/debug')
